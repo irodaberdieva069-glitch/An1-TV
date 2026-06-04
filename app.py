@@ -2,12 +2,21 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 st.set_page_config(layout="wide")
-st.title("📺 An1 TV - Sevimli Live")
 
-# Sevimli TV ning to'g'ridan-to'g'ri iframe manzili (saytdan olingan)
-sevimli_url = "https://www.youtube.com/embed/live_stream?channel=UCv4m51c4R86e24PqS_t3cRA"
+st.title("📺 Sevimli TV - To'g'ridan-to'g'ri")
 
-# To'g'ridan-to'g'ri ko'rsatish
-components.iframe(sevimli_url, height=500, scrolling=False)
+# Bu Sevimli TV ning o'z saytidagi rasmiy pleer manzili
+# Ushbu kod sayt pleerini to'g'ridan-to'g'ri chaqiradi
+player_code = """
+<div style="width: 100%; height: 500px; background-color: #000;">
+    <iframe src="https://sevimli.tv/live" 
+            width="100%" height="100%" 
+            frameborder="0" 
+            allowfullscreen>
+    </iframe>
+</div>
+"""
 
-st.write("Agar video qora bo'lsa, kanal hozir jonli efirda emas yoki YouTube efirni bloklagan.")
+components.html(player_code, height=520)
+
+st.info("Agar qora ekran chiqsa, brauzeringiz 'Cross-Origin' (CORS) cheklovini yoqib qo'ygan bo'lishi mumkin.")
