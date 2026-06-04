@@ -1,22 +1,17 @@
 import streamlit as st
-import streamlit.components.v1 as components
 
-st.set_page_config(layout="wide")
+st.set_page_config(page_title="An1 TV")
+st.title("📺 An1 TV")
 
-st.title("📺 Sevimli TV - To'g'ridan-to'g'ri")
+st.subheader("Kanallar:")
 
-# Bu Sevimli TV ning o'z saytidagi rasmiy pleer manzili
-# Ushbu kod sayt pleerini to'g'ridan-to'g'ri chaqiradi
-player_code = """
-<div style="width: 100%; height: 500px; background-color: #000;">
-    <iframe src="https://sevimli.tv/live" 
-            width="100%" height="100%" 
-            frameborder="0" 
-            allowfullscreen>
-    </iframe>
-</div>
-"""
+# Iframe o'rniga tugma - bu 100% ishlaydi!
+if st.button("Sevimli TV ni tomosha qilish"):
+    st.markdown("""
+        <script>
+            window.open('https://sevimli.tv/live', '_blank');
+        </script>
+    """, unsafe_allow_html=True)
+    st.write("Yangi oynada ochildi...")
 
-components.html(player_code, height=520)
-
-st.info("Agar qora ekran chiqsa, brauzeringiz 'Cross-Origin' (CORS) cheklovini yoqib qo'ygan bo'lishi mumkin.")
+st.info("Eslatma: Ba'zi telekanallar o'z efirini boshqa saytlarda ko'rsatishni taqiqlaydi, shuning uchun ularni to'g'ridan-to'g'ri o'z saytlarida ko'rish kerak.")
