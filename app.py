@@ -1,45 +1,42 @@
 import streamlit as st
-from streamlit_player import st_player
+import streamlit.components.v1 as components
 
-# 1. Sahifa sozlamalari
-st.set_page_config(page_title="An1 TV", page_icon="📺", layout="wide")
+# Sahifa sozlamalari
+st.set_page_config(page_title="An1 TV", layout="wide")
 
-# 2. CSS orqali interfeysni "chotki" qilish
-st.markdown("""
-    <style>
-    .stApp { background-color: #0e1117; }
-    h1 { color: #ff4b4b; text-align: center; font-family: sans-serif; }
-    .stSelectbox { border-radius: 10px; }
-    </style>
-""", unsafe_allow_html=True)
-
-# 3. Sarlavha
 st.title("📺 An1 TV")
-st.markdown("<p style='text-align: center;'>O'zbekistonning eng sara kanallari bir manzilda</p>", unsafe_allow_html=True)
 
-# 4. Kanallar ro'yxati (Bu yerga YouTube jonli efir linklarini qo'yasan)
+# Kanallar (Bu yerga haqiqiy .m3u8 linklarini qo'yasan)
 channels = {
-    "Sevimli TV": "https://www.youtube.com/watch?v=S25r_Y5gL7I",
-    "Zo'r TV": "https://www.youtube.com/watch?v=...",
-    "Milliy TV": "https://www.youtube.com/watch?v=...",
-    "MTRK": "https://www.youtube.com/watch?v=..."
+    "Kanal 1": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8", # Bu test uchun link
+    "Kanal 2": "https://...link_yozasan..."
 }
 
-# 5. Navigatsiya (Yon menyu)
-st.sidebar.header("Kanal tanlash")
-selected_channel = st.sidebar.selectbox("Qaysi kanalni ko'ramiz?", list(channels.keys()))
+# Sidebar
+selected_channel = st.sidebar.selectbox("Kanalni tanlang:", list(channels.keys()))
 
-# 6. Pleer qismi
+# Pleer qismi
 st.write(f"### Hozir efirda: {selected_channel}")
 
-# Pleer funksiyasi
-try:
-    st_player(channels[selected_channel], height=450)
-except:
-    st.error("Ushbu kanalning efiri hozircha mavjud emas.")
+# HTML kodini o'zgaruvchiga olamiz
+m3u8_link = channels[selected_channel]
 
-# 7. Pastki qism (Footer)
-st.markdown("---")
-st.sidebar.markdown("---")
-st.sidebar.write("An1 TV © 2026")
-st.sidebar.write("Dasturchi: **Abdulaziz Nematov**")
+# Bu yerda HLS.js kutubxonasini ishlatamiz, chunki oddiy brauzer .m3u8 ni to'g'ridan-to'g'ri ko'rsata olmaydi
+html_code = f"""
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<video id="video" width="100%" height="400" controls autoplay></video>
+<script>
+  var video = document.getElementById('video');
+  var videoSrc = '{m3u8_link}';
+  if (Hls.isSupported()) {{
+    var hls = new Hls();
+    hls.loadSource(videoSrc);
+    hls.attachMedia(video);
+  }} else if (video.canPlayType('application/vnd.apple.mpegurl')) {{
+    video.src = videoSrc;
+  }}
+</script>
+"""
+
+# Komponentni chaqiramiz
+components.html(html_code, height=450)
