@@ -1,13 +1,10 @@
 import streamlit as st
-import streamlit.components.v1 as components
 
 st.set_page_config(page_title="An1 TV", layout="wide")
+st.title("📺 An1 TV")
 
-st.title("📺 An1 TV - Live Stream")
+# Bu yerga to'g'ridan-to'g'ri kanalning o'zi ochiladigan sahifa linkini qo'y
+# Masalan, telekanallar o'z saytida jonli efirni qayerda ko'rsatsa, o'sha link
+embed_link = "https://www.youtube.com/embed/live_stream?channel=CHANNEL_ID" 
 
-# Bu yerda .m3u8 emas, balki o'sha kanalning 
-# Telecom TV yoki boshqa saytdagi 'Embed' linki bo'lishi kerak.
-# Misol uchun: 
-embed_url = "https://telecomtv.uz/embed/channel_id" 
-
-components.iframe(embed_url, height=500, scrolling=False)
+st.components.v1.iframe(embed_link, height=500)
