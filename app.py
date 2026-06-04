@@ -1,44 +1,13 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-# Sahifa sozlamalari
-st.set_page_config(page_title="An1 TV", layout="wide")
+st.set_page_config(layout="wide")
+st.title("📺 An1 TV - Sevimli Live")
 
-# Kanallar lug'ati - shu yerga istalgan linkni qo'shasan
-channels = {
-    "Sevimli TV": "https://www.youtube.com/embed/live_stream?channel=UCv4m51c4R86e24PqS_t3cRA",
-    "Test Stream (HLS)": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" 
-}
+# Sevimli TV ning to'g'ridan-to'g'ri iframe manzili (saytdan olingan)
+sevimli_url = "https://www.youtube.com/embed/live_stream?channel=UCv4m51c4R86e24PqS_t3cRA"
 
-# Sidebar
-selected = st.sidebar.selectbox("Kanal tanlash:", list(channels.keys()))
-url = channels[selected]
+# To'g'ridan-to'g'ri ko'rsatish
+components.iframe(sevimli_url, height=500, scrolling=False)
 
-st.title(f"📺 An1 TV | {selected}")
-
-# Universal pleer (Ham YouTube, ham .m3u8 uchun)
-html_code = f"""
-<div id="player-container" style="background:black; border-radius:10px; overflow:hidden;">
-    <iframe id="frame" width="100%" height="500px" src="{url}" frameborder="0" allowfullscreen></iframe>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-<script>
-    var url = "{url}";
-    if (url.endsWith('.m3u8')) {{
-        document.getElementById('frame').remove();
-        var vid = document.createElement('video');
-        vid.width = window.innerWidth;
-        vid.height = 500;
-        vid.controls = true;
-        vid.autoplay = true;
-        document.getElementById('player-container').appendChild(vid);
-        var hls = new Hls();
-        hls.loadSource(url);
-        hls.attachMedia(vid);
-    }}
-</script>
-"""
-
-components.html(html_code, height=520)
-
-st.sidebar.info("Dasturchi: Abdulaziz Nematov")
+st.write("Agar video qora bo'lsa, kanal hozir jonli efirda emas yoki YouTube efirni bloklagan.")
